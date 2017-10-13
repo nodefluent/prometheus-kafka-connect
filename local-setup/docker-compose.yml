@@ -1,0 +1,42 @@
+version: '2'
+services:
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: zk_pkc
+    ports:
+      - 2181:2181
+
+  kafka:
+    image: wurstmeister/kafka:0.10.2.1
+    container_name: kafka_pkc
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_PORT: 9092
+      KAFKA_ADVERTISED_HOST_NAME: "kafka"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://0.0.0.0:9092"
+      KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:9092"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  pushgateway:
+    image: prom/pushgateway
+    container_name: pushgateway_pkc
+    ports:
+      - 9091:9091
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus_pkc
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    links:
+      - pushgateway
