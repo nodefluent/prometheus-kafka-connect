@@ -1,32 +1,21 @@
 "use strict";
 
 const path = require("path");
+const express = require("express");
+const { register } = require("prom-client");
+const debug = require("debug")("nkc:prom:config");
+const router = express.Router();
+
+router.use("/metrics", (req, res) => {
+  res.set('Content-Type', register.contentType);
+  res.end(register.metrics());
+})
 
 const config = {
     kafka: {
-        //zkConStr: "localhost:2181/",
-        kafkaHost: "localhost:9092",
-        logger: null,
-        groupId: "kc-prometheus-group",
-        clientName: "kc-prometheus-client",
-        workerPerPartition: 1,
-        options: {
-            sessionTimeout: 8000,
-            protocol: ["roundrobin"],
-            fromOffset: "earliest", //latest
-            fetchMaxBytes: 1024 * 100,
-            fetchMinBytes: 1,
-            fetchMaxWaitMs: 10,
-            heartbeatInterval: 250,
-            retryMinTimeout: 250,
-            autoCommit: true,
-            autoCommitIntervalMs: 1000,
-            requireAcks: 1,
-            //ackTimeoutMs: 100,
-            //partitionerType: 3
-        },
         noptions: {
-            "metadata.broker.list": "localhost:9092",
+            "debug": "all",
+            "metadata.broker.list": process.env["KAFKA_HOST"] || "localhost:9092",
             "group.id": "n-test-group-9092",
             "enable.auto.commit": false,
             "event_cb": true
@@ -40,18 +29,18 @@ const config = {
     produceCompressionType: 0,
     connector: {
         options: {
-            proto: "http",
-            host: "localhost",
-            port: 9091,
-            job: "pushgateway_job",
+            job: "promclient_job",
+            additionalLabels: ["method"],
             logging: () => {}
         },
     },
     http: {
         port: 3149,
-        middlewares: []
+        middlewares: [router]
     },
     enableMetrics: true
 };
+
+debug(config);
 
 module.exports = config;

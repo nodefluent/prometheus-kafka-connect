@@ -18,10 +18,10 @@ rule_files:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'pushgateway_job'
+  - job_name: 'promclient_job'
 
     # metrics_path defaults to '/metrics'
     # scheme defaults to 'http'.
 
     static_configs:
-      - targets: ['pushgateway:9091']
+      - targets: ['promclient:3149']

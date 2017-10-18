@@ -1,5 +1,14 @@
 "use strict";
 
+const express = require("express");
+const { register } = require("prom-client");
+const router = express.Router();
+
+router.use("/metrics", (req, res) => {
+  res.set('Content-Type', register.contentType);
+  res.end(register.metrics());
+})
+
 const config = {
     kafka: {
         noptions: {
@@ -23,10 +32,8 @@ const config = {
     maxRetries: 3,
     connector: {
         options: {
-            proto: "http",
-            host: "localhost",
-            port: 9091,
-            job: "pushgateway_job",
+            job: "promclient_job",
+            additionalLabels: ["method"],
             logging: () => {}
         },
         maxPollCount: 50,
@@ -34,8 +41,8 @@ const config = {
         incrementingColumnName: "id"
     },
     http: {
-        port: 3149,
-        middlewares: []
+        port: 3131,
+        middlewares: [router]
     },
     enableMetrics: false
 };

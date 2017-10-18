@@ -2,41 +2,55 @@ version: '2'
 services:
 
   zookeeper:
-    image: wurstmeister/zookeeper:latest
     container_name: zk_pkc
+    image: wurstmeister/zookeeper:latest
     ports:
       - 2181:2181
 
   kafka:
-    image: wurstmeister/kafka:0.10.2.1
     container_name: kafka_pkc
+    image: wurstmeister/kafka:0.10.2.1
     ports:
       - 9092:9092
     links:
-      - zookeeper
-    depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_PORT: 9092
       KAFKA_ADVERTISED_HOST_NAME: "kafka"
-      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://0.0.0.0:9092"
-      KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:9092"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092"
+      KAFKA_LISTENERS: "PLAINTEXT://:9092"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
 
-  pushgateway:
-    image: prom/pushgateway
-    container_name: pushgateway_pkc
+  promclient:
+    container_name: promclient_pkc
+    build:
+      context: ../
+      dockerfile: Dockerfile
     ports:
-      - 9091:9091
+      - 3149:3149
+    links:
+      - kafka
+    environment:
+      KAFKA_HOST: kafka:9092
+      DEBUG: "nkc:prom:config"
 
   prometheus:
-    image: prom/prometheus
     container_name: prometheus_pkc
+    image: prom/prometheus
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - 9090:9090
     links:
-      - pushgateway
+      - promclient
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    links:
+      - prometheus
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
