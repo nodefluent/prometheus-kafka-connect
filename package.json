@@ -1,7 +1,7 @@
 {
-    "name": "prometheus-pushgw-kafka-connect",
+    "name": "prometheus-kafka-connect",
     "version": "1.0.0",
-    "description": "kafka-connect connector for prometheus pushgateway",
+    "description": "kafka-connect connector for prometheus",
     "main": "index.js",
     "scripts": {
         "start": "node example/sink.js",
@@ -37,7 +37,6 @@
         "bluebird": "^3.5.1",
         "debug": "^3.1.0",
         "kafka-connect": "^3.0.3",
-        "node-rdkafka": "^2.0.0",
         "prom-client": "^10.1.1"
     },
     "devDependencies": {

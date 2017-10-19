@@ -27,7 +27,7 @@ services:
     container_name: promclient_pkc
     build:
       context: ../
-      dockerfile: Dockerfile
+      dockerfile: debian.Dockerfile
     ports:
       - 3149:3149
     links:

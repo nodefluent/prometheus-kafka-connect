@@ -6,21 +6,31 @@ const config = require("./config.js");
 console.log("Waiting for message to be consumed...");
 
 const etl = (message, next) => {
-  let record;
-  console.log(message);
 
-  return next(null, message);
   // Do the transformation here
+  let record;
 
-  // if (record && record.metric && record.value) {
-  //   // Continue with the transformed record
-  //   console.log(message);
-  //   console.log("Processed");
-  // }
-  //
-  // // Continue without throwing error
-  // console.log("Not processed");
-  // return next();
+  try {
+    record = {
+      metric: message.payload.activity,
+      value: 1,
+      type: "counter",
+      marketId: message.payload.blah
+    }
+  } catch(err) {
+    // DO nothing
+  }
+
+  if (record && record.metric && record.value) {
+    // Continue with the transformed record
+    console.log(message);
+    console.log("Processed");
+    return next(null, record);
+  }
+
+  // Continue without throwing error
+  console.log("Not processed");
+  return next();
 
 }
 

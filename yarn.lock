@@ -1244,15 +1244,15 @@ jws@^3.0.0, jws@^3.1.4:
     safe-buffer "^5.0.1"
 
 kafka-connect@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/kafka-connect/-/kafka-connect-3.0.3.tgz#d91507f260d80bbd0ff88368632da61fbfd8b8e2"
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/kafka-connect/-/kafka-connect-3.1.0.tgz#5dea4c0b8c96180a1af0e29746df7f2a94dcc134"
   dependencies:
     async "^2.4.1"
     bluebird "^3.5.0"
     body-parser "^1.17.2"
     express "^4.15.4"
     prom-client "^10.0.3"
-    sinek "^6.1.1"
+    sinek "^6.5.0"
 
 kafka-node@^2.2.0:
   version "2.2.0"
@@ -1501,9 +1501,9 @@ node-pre-gyp@^0.6.38:
     tar "^2.2.1"
     tar-pack "^3.4.0"
 
-node-rdkafka@^2.0.0, node-rdkafka@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/node-rdkafka/-/node-rdkafka-2.0.0.tgz#188b15d95a5d5eae09a5097b2e649b5877159fd9"
+node-rdkafka@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/node-rdkafka/-/node-rdkafka-2.1.1.tgz#b15a2234b69df0f2d27295fbabb4a2b1f00058e4"
   dependencies:
     bindings "1.x"
     nan "2.x"
@@ -1926,9 +1926,9 @@ signal-exit@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
-sinek@^6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/sinek/-/sinek-6.1.1.tgz#fda8b1a3fc85fa0e62b79998f11e2dc9fe6ac814"
+sinek@^6.5.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/sinek/-/sinek-6.7.0.tgz#bea8c9e998558cded141334da9370b7c3df624c0"
   dependencies:
     async "~2.5.0"
     bluebird "~3.5.0"
@@ -1937,7 +1937,7 @@ sinek@^6.1.1:
     murmurhash "~0.0.2"
     uuid "~3.1.0"
   optionalDependencies:
-    node-rdkafka "~2.0.0"
+    node-rdkafka "^2.1.0"
 
 snakecase-keys@^1.1.0:
   version "1.1.0"
