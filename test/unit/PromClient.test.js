@@ -74,8 +74,8 @@ describe("PromClient Unit", function() {
           } catch (err) {
             const message = err.message;
             assert.deepEqual(message, expected);
+            done();
           }
-          done();
         });
 
         it("should fail on non string metric", function(done) {
@@ -85,8 +85,8 @@ describe("PromClient Unit", function() {
           } catch (err) {
             const message = err.message;
             assert.deepEqual(message, expected);
+            done();
           }
-          done();
         });
 
         it("should fail on non number value", function(done) {
@@ -96,8 +96,8 @@ describe("PromClient Unit", function() {
           } catch (err) {
             const message = err.message;
             assert.deepEqual(message, expected);
+            done();
           }
-          done();
         });
 
         it("should fail on non string type", function(done) {
@@ -107,8 +107,8 @@ describe("PromClient Unit", function() {
           } catch (err) {
             const message = err.message;
             assert.deepEqual(message, expected);
+            done();
           }
-          done();
         });
 
         it("should fail on non string help", function(done) {
@@ -118,19 +118,18 @@ describe("PromClient Unit", function() {
           } catch (err) {
             const message = err.message;
             assert.deepEqual(message, expected);
+            done();
           }
-          done();
         });
 
         it("should fail on non declared additional label", function(done) {
           const expected = 'Added label "foo" is not included in initial labelset: [ \'label\', \'job\', \'method\' ]';
-          try {
-            const metric = promclient._modify({metric: "fail_5", value: 1, foo: "test_label"});
-          } catch (err) {
-            const message = err.message;
-            assert.deepEqual(message, expected);
-          }
-          done();
+          promclient._modify({metric: "fail_5", value: 1, foo: "test_label"})
+            .catch(err => {
+              const message = err.message;
+              assert.deepEqual(message, expected);
+              done();
+            });
         });
 
     });

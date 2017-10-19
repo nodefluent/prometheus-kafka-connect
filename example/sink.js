@@ -7,19 +7,20 @@ console.log("Waiting for message to be consumed...");
 
 const etl = (message, next) => {
   let record;
+  console.log(message);
 
+  return next(null, message);
   // Do the transformation here
 
-  if (record && record.metric && record.value) {
-    // Continue with the transformed record
-    console.log(message);
-    console.log("Processed");
-    return next(null, record);
-  }
-
-  // Continue without throwing error
-  console.log("Not processed");
-  return next();
+  // if (record && record.metric && record.value) {
+  //   // Continue with the transformed record
+  //   console.log(message);
+  //   console.log("Processed");
+  // }
+  //
+  // // Continue without throwing error
+  // console.log("Not processed");
+  // return next();
 
 }
 
