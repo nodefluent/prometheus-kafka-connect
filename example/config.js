@@ -30,7 +30,7 @@ const config = {
     connector: {
         options: {
             job: "promclient_job",
-            additionalLabels: ["marketId"],
+            additionalLabels: ["method"],
             logging: () => {}
         },
     },
