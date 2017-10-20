@@ -3,7 +3,7 @@
 const { runSinkConnector, ConverterFactory } = require("./../index.js");
 const config = require("./config.js");
 
-console.log("Waiting for message to be consumed...");
+console.info("Waiting for message to be consumed...");
 
 const etl = (message, next) => {
 
@@ -16,27 +16,27 @@ const etl = (message, next) => {
       value: 1,
       type: "counter",
       method: message.method || "get"
-    }
+    };
   } catch(err) {
     // DO nothing
   }
 
   if (record && record.metric && record.value) {
     // Continue with the transformed record
-    console.log(message);
-    console.log("Processed");
+    console.info(message);
+    console.info("Processed");
     return next(null, record);
   }
 
   // Continue without throwing error
-  console.log("Not processed");
+  console.info("Not processed");
   return next();
 
-}
+};
 
 const converter = ConverterFactory.createSinkSchemaConverter(null,etl);
 
-runSinkConnector(config, [converter], console.log.bind(console)).then(sink => {
+runSinkConnector(config, [converter], console.info.bind(console)).then(sink => {
 
   const exit = (isExit = false) => {
     sink.stop();

@@ -24,6 +24,8 @@ const runSinkConnector = (properties, converters = [], onError = null) => {
   properties.http.middlewares = properties.http.middlewares || [];
   properties.http.middlewares.push(router);
 
+  debug(properties);
+
   const config = new PrometheusSinkConfig(properties,
     PrometheusSinkConnector,
     PrometheusSinkTask, [JsonConverter].concat(converters));
@@ -38,6 +40,6 @@ const runSinkConnector = (properties, converters = [], onError = null) => {
 };
 
 module.exports = {
-    runSinkConnector,
-    ConverterFactory
+  runSinkConnector,
+  ConverterFactory
 };
