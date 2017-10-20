@@ -12,7 +12,7 @@ router.use("/metrics", (req, res) => {
 const config = {
     kafka: {
         noptions: {
-            "metadata.broker.list": "localhost:9092",
+            "metadata.broker.list": "kafka:9092",
             "group.id": "n-test-group",
             "enable.auto.commit": false,
             "debug": "all",
@@ -22,7 +22,7 @@ const config = {
             "auto.offset.reset": "earliest"
         }
     },
-    topic: "pc_test_topic",
+    topic: "pkc_test_topic1",
     partitions: 1,
     maxTasks: 1,
     pollInterval: 2000,

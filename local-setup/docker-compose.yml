@@ -28,6 +28,7 @@ services:
     build:
       context: ../
       dockerfile: debian.Dockerfile
+    image: nodefluent/promclient
     ports:
       - 3149:3149
     links:
