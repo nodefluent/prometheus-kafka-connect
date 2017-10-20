@@ -17,6 +17,7 @@ const config = {
   produceKeyed: true,
   produceCompressionType: 0,
   connector: {
+    scrapeEndpoint: "/metrics",
     options: {
       job: "promclient_job",
       additionalLabels: ["method"],

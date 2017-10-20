@@ -12,19 +12,34 @@ const debug = require("debug")("nkc:prom:config");
 
 const runSinkConnector = (properties, converters = [], onError = null) => {
 
+  if(!properties || !properties.connector || !properties.connector.options){
+    return Promise.reject(new Error("Connector configuration is missing, connector.options should be an object."));
+  }
+
+  if(!properties.connector.options.job){
+    return Promise.reject(new Error("Connector configuration is missing, connector.options.job should be set."));
+  }
+
+  if(!properties.http){
+    properties.http = {};
+  }
+
+  if(!Array.isArray(properties.http.middlewares)){
+    properties.http.middlewares = [];
+  }
+  
+  debug(properties);
+
   const router = express.Router();
   const register = new Registry();
 
-  router.use("/metrics", (req, res) => {
+  router.use(properties.connector.scrapeEndpoint || "/metrics", (req, res) => {
     res.set("Content-Type", register.contentType);
     res.end(register.metrics());
   });
 
   properties.connector.options.register = register;
-  properties.http.middlewares = properties.http.middlewares || [];
   properties.http.middlewares.push(router);
-
-  debug(properties);
 
   const config = new PrometheusSinkConfig(properties,
     PrometheusSinkConnector,

@@ -21,7 +21,6 @@
         "kafka-connect",
         "connector",
         "prometheus",
-        "pushgateway",
         "kafka",
         "connect",
         "metrics"
