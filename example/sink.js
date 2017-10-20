@@ -12,10 +12,10 @@ const etl = (message, next) => {
 
   try {
     record = {
-      metric: message.payload.activity,
+      metric: message.metric,
       value: 1,
       type: "counter",
-      marketId: message.payload.payload.marketId
+      method: message.method || "get"
     }
   } catch(err) {
     // DO nothing
