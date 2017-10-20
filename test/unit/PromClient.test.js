@@ -66,9 +66,9 @@ describe("PromClient Unit", function() {
   describe("Errornous value", function() {
 
     it("should fail when object has been registered", function(done) {
-      const expected = "A metric with the name fail_1 has already been registered.";
+      const expected = "no metric and/or value";
       try {
-        promclient._newObject({metric: "fail_1"});
+        promclient._checkThrowable({metric: "fail_1"});
       } catch (err) {
         const message = err.message;
         assert.deepEqual(message, expected);
