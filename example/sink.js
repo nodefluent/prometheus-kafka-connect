@@ -12,10 +12,10 @@ const etl = (message, next) => {
 
   try {
     record = {
-      metric: message.metric,
-      value: message.value || 1,
+      metric: message.payload.activity,
+      value: 1,
       type: "counter",
-      method: message.method
+      marketId: message.payload.payload.marketId
     }
   } catch(err) {
     // DO nothing
@@ -38,18 +38,18 @@ const converter = ConverterFactory.createSinkSchemaConverter(null,etl);
 
 runSinkConnector(config, [converter], console.log.bind(console)).then(sink => {
 
-    const exit = (isExit = false) => {
-        sink.stop();
-        if (!isExit) {
-            process.exit();
-        }
-    };
+  const exit = (isExit = false) => {
+    sink.stop();
+    if (!isExit) {
+      process.exit();
+    }
+  };
 
-    process.on("SIGINT", () => {
-        exit(false);
-    });
+  process.on("SIGINT", () => {
+    exit(false);
+  });
 
-    process.on("exit", () => {
-        exit(true);
-    });
+  process.on("exit", () => {
+    exit(true);
+  });
 });

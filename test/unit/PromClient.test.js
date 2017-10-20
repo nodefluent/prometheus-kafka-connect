@@ -15,11 +15,11 @@ describe("PromClient Unit", function() {
 
           const expected = promclient._newObject({metric: "test_metric"});
 
-          // assert.doesNotThrow(() => {
+          assert.doesNotThrow(() => {
              const metric = promclient._getMetricObject({metric: "test_metric"});
              assert.deepEqual(metric, expected);
              done();
-          //  });
+           });
         });
 
         it("set on gauge should change the value", function(done) {

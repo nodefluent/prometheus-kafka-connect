@@ -1,14 +1,5 @@
 "use strict";
 
-const express = require("express");
-const { register } = require("prom-client");
-const router = express.Router();
-
-router.use("/metrics", (req, res) => {
-  res.set('Content-Type', register.contentType);
-  res.end(register.metrics());
-})
-
 const config = {
     kafka: {
         noptions: {
@@ -42,7 +33,7 @@ const config = {
     },
     http: {
         port: 3131,
-        middlewares: [router]
+        middlewares: []
     },
     enableMetrics: false
 };

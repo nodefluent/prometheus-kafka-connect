@@ -6,7 +6,7 @@ const request = require("request");
 const { SourceRecord } = require("kafka-connect");
 const { NProducer } = require("sinek");
 
-const { runSourceConnector, runSinkConnector, ConverterFactory } = require("./../../index.js");
+const { runSinkConnector, ConverterFactory } = require("./../../index.js");
 const sinkProperties = require("./../sink-config.js");
 
 describe("Connector INT", function() {
@@ -46,7 +46,7 @@ describe("Connector INT", function() {
         const random = (Math.random()*10).toFixed(3) * 1;
         let config = null;
         let error = null;
-        let topic = "pc_test_topic_2";
+        let topic = "pkc_test_topic1";
         let converter = {};
         let producer = null;
 
@@ -57,9 +57,9 @@ describe("Connector INT", function() {
                 let record = {
                     metric: message.metric,
                     value: message.value,
-                    label: message.label,
-                    type: message.type,
-                    help: message.help
+                    label: message.label || null,
+                    type: message.type || null,
+                    help: message.help || null
                 }
 
                 return callback(null, record);
