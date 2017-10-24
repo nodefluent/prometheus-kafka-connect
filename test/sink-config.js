@@ -3,33 +3,26 @@
 const config = {
   kafka: {
     noptions: {
+      "debug": "all",
       "metadata.broker.list": "kafka:9092",
       "group.id": "n-test-group",
       "enable.auto.commit": false,
-      "debug": "all",
       "event_cb": true
-    },
-    tconf: {
-      "auto.offset.reset": "earliest"
     }
   },
-  topic: "pkc_test_topic1",
+  topic: "pkc_test_topic0",
   partitions: 1,
   maxTasks: 1,
-  pollInterval: 2000,
+  pollInterval: 250,
   produceKeyed: true,
   produceCompressionType: 0,
-  awaitRetry: 2000,
-  maxRetries: 3,
   connector: {
+    scrapeEndpoint: "/metrics",
     options: {
       job: "promclient_job",
       additionalLabels: ["method"],
       logging: () => {}
     },
-    maxPollCount: 50,
-    table: "accounts_import",
-    incrementingColumnName: "id"
   },
   http: {
     port: 3131,

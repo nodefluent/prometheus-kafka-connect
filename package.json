@@ -6,7 +6,8 @@
     "scripts": {
         "start": "node example/sink.js",
         "start:dev": "nodemon example/sink.js",
-        "test": "eslint --fix . && _mocha --recursive --exit --timeout 12500 -R spec test/",
+        "test": "eslint . && cd local-setup/ && docker-compose up test",
+        "test:docker": "_mocha --recursive --exit --timeout 12500 -R spec test/",
         "test-ci": "_mocha --report lcovonly --recursive --timeout 12500 --exit -R spec test/ && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",

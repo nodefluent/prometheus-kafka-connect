@@ -12,10 +12,10 @@ describe("PromClient Unit", function() {
 
     it("should register the metric", function(done) {
 
-      const expected = promclient._newObject({metric: "test_metric"});
+      const expected = promclient._newObject({metric: "test_metric", type: "gauge"});
 
       assert.doesNotThrow(() => {
-        const metric = promclient._getMetricObject({metric: "test_metric"});
+        const metric = promclient._getMetricObject({metric: "test_metric", type: "gauge"});
         assert.deepEqual(metric, expected);
         done();
       });
@@ -24,9 +24,9 @@ describe("PromClient Unit", function() {
     it("set on gauge should change the value", function(done) {
       const expected = 123;
       assert.doesNotThrow(() => {
-        const metric = promclient._getMetricObject({metric: "gauge_metric"});
-        promclient._modify({metric: "gauge_metric", label:"test", value: 456});
-        promclient._modify({metric: "gauge_metric", label:"test", value: 123});
+        const metric = promclient._getMetricObject({metric: "gauge_metric", type: "gauge"});
+        promclient._modify({metric: "gauge_metric", type: "gauge", label:"test", value: 456});
+        promclient._modify({metric: "gauge_metric", type: "gauge", label:"test", value: 123});
         assert.deepEqual(metric.hashMap["job:promclient_job,label:test"].value, expected);
         done();
       });
@@ -35,7 +35,7 @@ describe("PromClient Unit", function() {
     it("inc on counter should increase the value", function(done) {
       const expected = 3;
       assert.doesNotThrow(() => {
-        const metric = promclient._getMetricObject({metric: "counter_metric"});
+        const metric = promclient._getMetricObject({metric: "counter_metric", type: "gauge"});
         promclient._modify({metric: "counter_metric", type: "counter", label:"test", value: 1});
         promclient._modify({metric: "counter_metric", type: "counter", label:"test", value: 2});
         assert.deepEqual(metric.hashMap["job:promclient_job,label:test"].value, expected);
@@ -46,7 +46,7 @@ describe("PromClient Unit", function() {
     it("should create the correct label for custom label - nested", function(done) {
       const expected = {job: connector.options.job, label:"test", method: "get"};
       assert.doesNotThrow(() => {
-        const labels = promclient._getLabels({metric: "test_label_1", label: { label: "test", method: "get"}});
+        const labels = promclient._getLabels({metric: "test_label_1", type: "gauge", label: { label: "test", method: "get"}});
         assert.deepEqual(labels, expected);
         done();
       });
@@ -55,7 +55,7 @@ describe("PromClient Unit", function() {
     it("should create the correct label for custom label - not nested", function(done) {
       const expected = {job: connector.options.job, label:"test", method: "get"};
       assert.doesNotThrow(() => {
-        const labels = promclient._getLabels({metric: "test_label_1", label: "test", method: "get"});
+        const labels = promclient._getLabels({metric: "test_label_1", type: "gauge", label: "test", method: "get"});
         assert.deepEqual(labels, expected);
         done();
       });
@@ -122,7 +122,7 @@ describe("PromClient Unit", function() {
 
     it("should fail on non declared additional label", function(done) {
       const expected = "Added label \"foo\" is not included in initial labelset: [ 'label', 'job', 'method' ]";
-      promclient._modify({metric: "fail_5", value: 1, foo: "test_label"})
+      promclient._modify({metric: "fail_5", type: "gauge", value: 1, foo: "test_label"})
         .catch(err => {
           const message = err.message;
           assert.deepEqual(message, expected);

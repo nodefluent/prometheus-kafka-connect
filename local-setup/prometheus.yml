@@ -25,4 +25,4 @@ scrape_configs:
 
     static_configs:
       - targets: ['promclient:3149']
-      - targets: ['172.19.0.1:3131']
+      - targets: ['test:3131']

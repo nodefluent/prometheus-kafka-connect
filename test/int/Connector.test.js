@@ -7,6 +7,23 @@ const { NProducer } = require("sinek");
 const { runSinkConnector, ConverterFactory } = require("./../../index.js");
 const sinkProperties = require("./../sink-config.js");
 
+
+const etl = (message, callback) => {
+
+  const record = {
+    metric: message.metric || "test_metric",
+    value: message.value || 1,
+    label: message.label || null,
+    type: message.type || "gauge",
+    help: message.help || null
+  };
+
+  return callback(null, record);
+
+};
+
+const converter = ConverterFactory.createSinkSchemaConverter(null, etl);
+
 describe("Connector INT", function() {
 
   describe("Sink", function() {
@@ -17,8 +34,10 @@ describe("Connector INT", function() {
     it("should be able to run prometheus sink config", function() {
       const onError = _error => {
         error = _error;
+        console.error(error.message, "1");
       };
-      return runSinkConnector(Object.assign({}, sinkProperties, { enableMetrics: true }), [], onError).then(_config => {
+
+      return runSinkConnector(sinkProperties, [], onError).then(_config => {
         config = _config;
         return true;
       });
@@ -44,27 +63,10 @@ describe("Connector INT", function() {
     const random = (Math.random()*10).toFixed(3) * 1;
     let config = null;
     let error = null;
-    let topic = "pkc_test_topic1";
-    let converter = {};
+    let topic = "pkc_test_topic0";
     let producer = null;
 
     it("should be able to create custom converter", function(done) {
-
-      const etl = (message, callback) => {
-
-        let record = {
-          metric: message.metric,
-          value: message.value,
-          label: message.label || null,
-          type: message.type || null,
-          help: message.help || null
-        };
-
-        return callback(null, record);
-
-      };
-
-      converter = ConverterFactory.createSinkSchemaConverter(null, etl);
 
       const payload = {"metric":"pi_metric","value":3.14159,"type":"gauge","help":"it is pi","label":"constants"};
 
@@ -98,8 +100,8 @@ describe("Connector INT", function() {
       producer = new NProducer(sinkProperties.kafka, topic, 1);
       return producer.connect().then(_ => {
         return Promise.all([
-          producer.buffer(topic, "3", {"metric":"euler_metric","value":2.71828,"type":"gauge"}),
-          producer.buffer(topic, "4", {"metric":"any_metric","value":random})
+          producer.send(topic, JSON.stringify({"metric":"euler_metric","value":2.71828,"type":"gauge"})),
+          producer.send(topic, JSON.stringify({"metric":"any_metric","value":random}))
         ]);
       });
     });
@@ -112,8 +114,10 @@ describe("Connector INT", function() {
     });
 
     it("should be able to sink message through custom converter", function() {
+
       const onError = _error => {
         error = _error;
+        console.error(error.message, "2");
       };
 
       const customProperties = Object.assign({}, sinkProperties, { topic });
@@ -165,6 +169,7 @@ describe("Connector INT", function() {
     it("should be able to run prometheus sink config", function() {
       const onError = _error => {
         error = _error;
+        console.error(error.message, "3");
       };
 
       sinkProperties.topic = brokenTopic;
@@ -185,7 +190,7 @@ describe("Connector INT", function() {
 
       const producer = new NProducer(sinkProperties.kafka, [brokenTopic]);
       producer.on("error", error => {
-        console.error(error);
+        console.error(error.message, "4");
         return done();
       });
 
@@ -197,6 +202,7 @@ describe("Connector INT", function() {
     it("should be able to run prometheus sink config", function() {
       const onError = _error => {
         error = _error;
+        console.error(error.message, "5");
       };
 
       sinkProperties.topic = brokenTopic;

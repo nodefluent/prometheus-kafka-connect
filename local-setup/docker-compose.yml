@@ -38,6 +38,20 @@ services:
       KAFKA_HOST: kafka:9092
       DEBUG: "nkc:prom:config"
 
+  test:
+    container_name: promclient_test_pkc
+    build:
+      context: ../
+      dockerfile: debian.test.Dockerfile
+    image: nodefluent/promclient-test
+    ports:
+      - 3131:3131
+    links:
+      - kafka
+      - prometheus
+    environment:
+      KAFKA_HOST: kafka:9092
+
   prometheus:
     container_name: prometheus_pkc
     image: prom/prometheus

@@ -2538,8 +2538,8 @@ prom-client@^10.0.3:
     tdigest "^0.1.1"
 
 prom-client@^10.1.1:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/prom-client/-/prom-client-10.1.1.tgz#94f5d0edbcd76ba28372f84e7af3e7f237068839"
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/prom-client/-/prom-client-10.2.0.tgz#a6250a4ea5032b0bed0cb57a2463f1472e6095ee"
   dependencies:
     tdigest "^0.1.1"
 
