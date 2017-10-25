@@ -5,12 +5,12 @@ const config = {
     noptions: {
       "debug": "all",
       "metadata.broker.list": "kafka:9092",
-      "group.id": "n-test-group",
+      "group.id": "test-group-pkc-9092",
       "enable.auto.commit": false,
       "event_cb": true
     }
   },
-  topic: "pkc_test_topic0",
+  topic: "test-topic-pkc-9092-1",
   partitions: 1,
   maxTasks: 1,
   pollInterval: 250,
