@@ -21,8 +21,13 @@ const config = {
     options: {
       job: "promclient_job",
       additionalLabels: ["method"],
-      logging: () => {}
-    },
+      logging: () => {},
+      cleaning: {
+        interval: 20, // in seconds
+        // value: 1, // maximum value that will be pruned
+        rank: 10 // not trimming the top rank metric
+      }
+    }
   },
   http: {
     port: 3149,
