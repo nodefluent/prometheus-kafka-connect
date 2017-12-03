@@ -43,6 +43,32 @@ describe("PromClient Unit", function() {
       });
     });
 
+    it("observe on histogram should return correct count and sum", function(done) {
+      const expectedSum = 3;
+      const expectedCount = 2;
+      assert.doesNotThrow(() => {
+        const metric = promclient._getMetricObject({metric: "histogram_metric", type: "histogram"});
+        promclient._modify({metric: "histogram_metric", type: "histogram", label:"test", value: 1});
+        promclient._modify({metric: "histogram_metric", type: "histogram", label:"test", value: 2});
+        assert.deepEqual(metric.hashMap["job:promclient_job,label:test"].sum, expectedSum);
+        assert.deepEqual(metric.hashMap["job:promclient_job,label:test"].count, expectedCount);        
+        done();
+      });
+    });
+
+    it("observe on summary should return correct count and sum", function(done) {
+      const expectedSum = 3;
+      const expectedCount = 2;
+      assert.doesNotThrow(() => {
+        const metric = promclient._getMetricObject({metric: "summary_metric", type: "histogram"});
+        promclient._modify({metric: "summary_metric", type: "summary", label:"test", value: 1});
+        promclient._modify({metric: "summary_metric", type: "summary", label:"test", value: 2});
+        assert.deepEqual(metric.hashMap["job:promclient_job,label:test"].sum, expectedSum);
+        assert.deepEqual(metric.hashMap["job:promclient_job,label:test"].count, expectedCount);        
+        done();
+      });
+    });
+
     it("should create the correct label for custom label - nested", function(done) {
       const expected = {job: connector.options.job, label:"test", method: "get"};
       assert.doesNotThrow(() => {
